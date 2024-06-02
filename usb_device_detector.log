@@ -1,0 +1,53 @@
+2024-06-01 21:59:29,075 - DEBUG - Initializing USBDeviceDetector...
+2024-06-01 21:59:29,078 - DEBUG - Initialization complete.
+2024-06-01 21:59:29,080 - DEBUG - Detecting connected USB devices...
+2024-06-01 21:59:29,174 - DEBUG - Inspecting port: COM6
+2024-06-01 21:59:29,176 - DEBUG - Inspecting port: COM7
+2024-06-01 21:59:29,178 - DEBUG - Inspecting port: COM8
+2024-06-01 21:59:29,179 - INFO - Detected devices: [{'device': 'COM8', 'name': 'COM8', 'description': 'USB-SERIAL CH340 (COM8)', 'hwid': 'USB VID:PID=1A86:7523 SER= LOCATION=1-2', 'vid': 6790, 'pid': 29987, 'serial_number': '', 'location': '1-2', 'manufacturer': 'wch.cn', 'product': None, 'interface': None}]
+2024-06-01 21:59:29,181 - INFO - Connected Devices:
+2024-06-01 21:59:29,183 - INFO - Device: COM8
+  Name: COM8
+  Description: USB-SERIAL CH340 (COM8)
+  HWID: USB VID:PID=1A86:7523 SER= LOCATION=1-2
+  VID: 6790
+  PID: 29987
+  Serial Number: 
+  Location: 1-2
+  Manufacturer: wch.cn
+  Product: None
+  Interface: None
+
+2024-06-01 21:59:29,189 - DEBUG - Attempting to connect to devices...
+2024-06-01 21:59:29,191 - INFO - Attempting connection to COM8 with baudrate 300
+2024-06-01 21:59:31,200 - INFO - Response from COM8 at 300: 
+2024-06-01 21:59:31,203 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:31,206 - INFO - Attempting connection to COM8 with baudrate 600
+2024-06-01 21:59:33,224 - INFO - Response from COM8 at 600: 
+2024-06-01 21:59:33,226 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:33,230 - INFO - Attempting connection to COM8 with baudrate 1200
+2024-06-01 21:59:35,243 - INFO - Response from COM8 at 1200: 
+2024-06-01 21:59:35,245 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:35,248 - INFO - Attempting connection to COM8 with baudrate 2400
+2024-06-01 21:59:37,259 - INFO - Response from COM8 at 2400: 
+2024-06-01 21:59:37,261 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:37,264 - INFO - Attempting connection to COM8 with baudrate 4800
+2024-06-01 21:59:39,287 - INFO - Response from COM8 at 4800: 
+2024-06-01 21:59:39,289 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:39,292 - INFO - Attempting connection to COM8 with baudrate 9600
+2024-06-01 21:59:41,304 - INFO - Response from COM8 at 9600: 
+2024-06-01 21:59:41,305 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:41,308 - INFO - Attempting connection to COM8 with baudrate 19200
+2024-06-01 21:59:43,330 - INFO - Response from COM8 at 19200: 
+2024-06-01 21:59:43,332 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:43,335 - INFO - Attempting connection to COM8 with baudrate 38400
+2024-06-01 21:59:45,350 - INFO - Response from COM8 at 38400: 
+2024-06-01 21:59:45,367 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:45,370 - INFO - Attempting connection to COM8 with baudrate 57600
+2024-06-01 21:59:47,389 - WARNING - Received non-UTF-8 response from COM8 at 57600: b'\x8c\x8e\r\x95\xc5FHH\x0e\xbc\xcd\xcc'
+2024-06-01 21:59:47,393 - DEBUG - Closing connection to COM8.
+2024-06-01 21:59:47,395 - INFO - Attempting connection to COM8 with baudrate 115200
+2024-06-01 21:59:47,407 - INFO - Response from COM8 at 115200: [VER:1.1h.20230903:]
+
+2024-06-01 21:59:47,409 - INFO - Successfully connected on COM8 at 115200.
+2024-06-01 21:59:47,411 - DEBUG - Closing connection to COM8.
