@@ -1,7 +1,6 @@
 import logging, colorlog, serial
 from serial.tools import list_ports
 
-# Configure logging with colorlog
 formatter = colorlog.ColoredFormatter(
     "%(log_color)s%(asctime)s - %(levelname)s - %(reset)s%(message)s",
     datefmt=None,
@@ -17,7 +16,6 @@ formatter = colorlog.ColoredFormatter(
     style='%'
 )
 
-# Handlers
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logging.basicConfig(level=logging.DEBUG, handlers=[stream_handler])
@@ -27,8 +25,8 @@ class USBDeviceDetector:
         """Initialize USBDeviceDetector."""
         logging.debug("Initializing USBDeviceDetector...")
         self.ser = None
-        self.connected_devices = list()
         self.brands = ["wch.cn"]
+        self.connected_devices = list()
         self.baudrates = [300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600]
         logging.debug("Initialization complete.")
 
