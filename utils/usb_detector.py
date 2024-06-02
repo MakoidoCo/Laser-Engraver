@@ -1,7 +1,5 @@
-import logging
+import logging, colorlog, serial
 from serial.tools import list_ports
-import serial
-import colorlog
 
 # Configure logging with colorlog
 formatter = colorlog.ColoredFormatter(
