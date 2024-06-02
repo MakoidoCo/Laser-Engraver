@@ -20,11 +20,9 @@ formatter = colorlog.ColoredFormatter(
 )
 
 # Handlers
-file_handler = logging.FileHandler("usb_device_detector.log", mode='w')
-file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
-logging.basicConfig(level=logging.DEBUG, handlers=[file_handler, stream_handler])
+logging.basicConfig(level=logging.DEBUG, handlers=[stream_handler])
 
 class USBDeviceDetector:
     def __init__(self):
