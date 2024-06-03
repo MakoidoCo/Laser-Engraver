@@ -98,7 +98,7 @@ class USBDeviceDetector:
             logging.info("No devices connected.")
 
 
-    def __try_connect(self) -> list[str, int]:
+    def __try_connect(self) -> list[str, int] | list[None, None]:
         """Try to connect to each device using the provided baudrates."""
         logging.debug("Attempting to connect to devices...")
 
