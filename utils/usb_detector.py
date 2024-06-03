@@ -16,9 +16,11 @@ formatter = colorlog.ColoredFormatter(
     style='%'
 )
 
+
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 logging.basicConfig(level=logging.DEBUG, handlers=[stream_handler])
+
 
 class USBDeviceDetector:
     def __init__(self) -> None:
@@ -139,6 +141,7 @@ class USBDeviceDetector:
         logging.error("Couldn't connect to any device.")
 
         return None, None
+
 
 if __name__ == "__main__":
     detector = USBDeviceDetector()
