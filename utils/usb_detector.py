@@ -21,7 +21,7 @@ stream_handler.setFormatter(formatter)
 logging.basicConfig(level=logging.DEBUG, handlers=[stream_handler])
 
 class USBDeviceDetector:
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize USBDeviceDetector."""
         logging.debug("Initializing USBDeviceDetector...")
         self.ser = None
@@ -30,7 +30,12 @@ class USBDeviceDetector:
         self.baudrates = [300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600]
         logging.debug("Initialization complete.")
 
-    def detect_devices(self):
+    def run(self) -> None:
+        self.detect_devices()
+        self.print_connected_devices()
+        self.try_connect()
+
+    def detect_devices(self) -> None:
         """Detect all connected USB devices and store their information."""
         logging.debug("Detecting connected USB devices...")
         self.connected_devices = list()
@@ -56,12 +61,12 @@ class USBDeviceDetector:
                     self.connected_devices.append(device_info)
         logging.info("Detected devices: %s", self.connected_devices)
 
-    def get_connected_devices(self):
+    def get_connected_devices(self) -> None:
         """Return a list of connected USB devices."""
         logging.debug("Getting list of connected USB devices.")
         return self.connected_devices
 
-    def print_connected_devices(self):
+    def print_connected_devices(self) -> None:
         """Print detailed information about connected USB devices."""
         if self.connected_devices:
             logging.info("Connected Devices:")
@@ -83,7 +88,7 @@ class USBDeviceDetector:
         else:
             logging.info("No devices connected.")
 
-    def try_connect(self):
+    def try_connect(self) -> None:
         """Try to connect to each device using the provided baudrates."""
         logging.debug("Attempting to connect to devices...")
         for device in self.connected_devices:
@@ -120,6 +125,4 @@ class USBDeviceDetector:
 
 if __name__ == "__main__":
     detector = USBDeviceDetector()
-    detector.detect_devices()
-    detector.print_connected_devices()
-    detector.try_connect()
+    detector.run()
