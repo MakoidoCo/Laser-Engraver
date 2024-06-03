@@ -1,6 +1,7 @@
 import logging, colorlog, serial
 from serial.tools import list_ports
 
+
 formatter = colorlog.ColoredFormatter(
     "%(log_color)s%(asctime)s - %(levelname)s - %(reset)s%(message)s",
     datefmt=None,
