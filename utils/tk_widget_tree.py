@@ -83,6 +83,7 @@ class TKWidgetTree:
             "viewable": bool(widget.winfo_viewable()),
             "on_screen": self._is_widget_visible(widget),
             "manager": widget.winfo_manager() or False,
+            "widget": widget,
             "children": []
         }
 
@@ -361,7 +362,7 @@ class ExampleApp(tk.Tk):
         tkwidget_tree_log.info(f"Widget found by name (with depth=1): {found_widget}")
         
         found_widget = self.viewer.find_widget(button2)
-        tkwidget_tree_log.info(f"Widget found by reference (no depth):\n{pprint(found_widget, indent=2)}")
+        tkwidget_tree_log.info(f"Widget found by reference (no depth): {pprint(found_widget, indent=2)}")
         
         found_widget = self.viewer.find_widget(button2, max_depth=1)
         tkwidget_tree_log.info(f"Widget found by reference (with depth=1): {found_widget}")
