@@ -1,8 +1,9 @@
 import tkinter as tk
-import logging, os
+import logging, os, sys
 from pprint import pprint
-from setup import HANDLER, LOGLEVEL
 from typing import Union, Dict, List, Optional
+
+from setup import HANDLER, LOGLEVEL
 
 tkwidget_tree_log = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 tkwidget_tree_log.addHandler(HANDLER)

@@ -1,0 +1,102 @@
+{
+    "International_Events": [
+        "Valentine's Day",
+        "International Women's Day",
+        "St. Patrick's Day",
+        "Labor Day",
+        "Mother's Day",
+        "Father's Day",
+        "Pride Day",
+        "Halloween",
+        "Thanksgiving",
+        "Christmas",
+        "New Year"
+    ],
+    
+    "National_Events": {
+        "Mexico": [
+            "Independence Day",
+            "Day of the Dead",
+            "Cinco de Mayo"
+        ]
+    },
+
+    "Celebrity_Days": [
+        "Martin Luther King Jr. Day",
+        "Presidents' Day",
+        "Nelson Mandela Day",
+        "Gandhi Day",
+        "Albert Einstein Day"
+    ],
+
+    "Special_and_Thematic_Events": [
+        "Weddings",
+        "Birthdays",
+        "Anniversaries",
+        "Graduations",
+        "Baby Showers",
+        "Corporate Events",
+        "Quinceañeras",
+        "Baptisms"
+    ],
+
+    "Sporting_Events": [
+        "FIFA World Cup",
+        "Olympic Games",
+        "Super Bowl",
+        "World Series",
+        "Wimbledon"
+    ],
+
+    "International_Days": [
+        "World Health Day",
+        "World Book Day",
+        "World Chocolate Day",
+        "International Coffee Day",
+        "World Photography Day"
+    ],
+
+    "Seasonal_Customization": [
+        "Spring",
+        "Summer",
+        "Autumn",
+        "Winter"
+    ],
+
+    "Popular_Themes": [
+        "Superheroes",
+        "Series and Movies",
+        "Music",
+        "Video Games",
+        "Memes"
+    ],
+
+
+    "Personal_Dates": [
+        "Birthdays",
+        "Anniversaries",
+        "Personal Achievements"
+    ],
+
+    "Home_Products": [
+        "Kitchen Appliances",
+        "Bedding",
+        "Home Decor",
+        "Furniture",
+        "Cleaning Supplies",
+        "Gardening Tools"
+    ],
+
+    "Religious_Events": [
+        "Jesus Christ",
+        "Buddha",
+        "Krishna",
+        "Ganesha",
+        "Allah",
+        "Jehovah",
+        "Shiva",
+        "Vishnu",
+        "Yahweh",
+        "Moses"
+    ]
+}
