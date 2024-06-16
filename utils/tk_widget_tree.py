@@ -48,7 +48,7 @@ class TKWidgetTree:
         return is_visible
 
 
-    def _is_widget_tapped(self, widget: tk.Widget) -> bool:
+    def _is_widget_covered(self, widget: tk.Widget) -> bool:
         """
         Checks if a widget is tapped (covered) by another widget.
 
@@ -80,7 +80,7 @@ class TKWidgetTree:
             "class": widget.winfo_class(),
             "name": widget.winfo_name(),
             "depth": depth + 1,
-            "tapped": self._is_widget_tapped(widget),
+            "tapped": self._is_widget_covered(widget),
             "mapped": bool(widget.winfo_ismapped()),
             "viewable": bool(widget.winfo_viewable()),
             "on_screen": self._is_widget_visible(widget),
