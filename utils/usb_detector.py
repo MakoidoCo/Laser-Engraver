@@ -1,37 +1,21 @@
-import logging, colorlog, serial
+import logging, serial, os
 from serial.tools import list_ports
+from setup import HANDLER, LOGLEVEL
 
-
-formatter = colorlog.ColoredFormatter(
-    "%(log_color)s%(asctime)s - %(levelname)s - %(reset)s%(message)s",
-    datefmt=None,
-    reset=True,
-    log_colors={
-        'DEBUG': 'cyan',
-        'INFO': 'green',
-        'WARNING': 'yellow',
-        'ERROR': 'red',
-        'CRITICAL': 'red,bg_white',
-    },
-    secondary_log_colors={},
-    style='%'
-)
-
-
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logging.basicConfig(level=logging.DEBUG, handlers=[stream_handler])
+usb_detector_log = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
+usb_detector_log.addHandler(HANDLER)
+usb_detector_log.setLevel(LOGLEVEL)
 
 
 class USBDeviceDetector:
     def __init__(self) -> None:
         """Initialize USBDeviceDetector."""
-        logging.debug("Initializing USBDeviceDetector...")
+        usb_detector_log.debug("Initializing USBDeviceDetector...")
         self.ser = None
         self.brands = ["wch.cn"]
         self.connected_devices = list()
         self.baudrates = [300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600]
-        logging.debug("Initialization complete.")
+        usb_detector_log.debug("Initialization complete.")
 
 
     def run(self) -> None:
@@ -42,13 +26,13 @@ class USBDeviceDetector:
 
     def __detect_devices(self) -> None:
         """Detect all connected USB devices and store their information."""
-        logging.debug("Detecting connected USB devices...")
+        usb_detector_log.debug("Detecting connected USB devices...")
         self.connected_devices = list()
         ports = list_ports.comports()
 
         for port in ports:
 
-            logging.debug(f"Inspecting port: {port.device}")
+            usb_detector_log.debug(f"Inspecting port: {port.device}")
             if port.device:
                 device_info = {
                     "device": port.device,
@@ -67,19 +51,19 @@ class USBDeviceDetector:
                 if device_info["manufacturer"] in self.brands:
                     self.connected_devices.append(device_info)
 
-        logging.info("Detected devices: %s", self.connected_devices)
+        usb_detector_log.info("Detected devices: %s", self.connected_devices)
 
 
     def __get_connected_devices(self) -> list[int]:
         """Return a list of connected USB devices."""
-        logging.debug("Getting list of connected USB devices.")
+        usb_detector_log.debug("Getting list of connected USB devices.")
         return self.connected_devices
 
 
     def __print_connected_devices(self) -> None:
         """Print detailed information about connected USB devices."""
         if self.connected_devices:
-            logging.info("Connected Devices:")
+            usb_detector_log.info("Connected Devices:")
 
             for device in self.connected_devices:
                 device_info = (
@@ -95,51 +79,51 @@ class USBDeviceDetector:
                     f"  Product: {device['product']}\n"
                     f"  Interface: {device['interface']}\n"
                 )
-                logging.info(device_info)
+                usb_detector_log.info(device_info)
 
         else:
-            logging.info("No devices connected.")
+            usb_detector_log.info("No devices connected.")
 
 
     def __try_connect(self) -> list[str, int] | list[None, None]:
         """Try to connect to each device using the provided baudrates."""
-        logging.debug("Attempting to connect to devices...")
+        usb_detector_log.debug("Attempting to connect to devices...")
 
         for device in self.connected_devices:
             port = device["device"]
 
             if device["manufacturer"] == "Microsoft":
-                logging.debug(f"Skipping device {port} (Microsoft device).")
+                usb_detector_log.debug(f"Skipping device {port} (Microsoft device).")
                 continue
 
             for baudrate in self.baudrates:
                 try:
-                    logging.info("Attempting connection to %s with baudrate %d", port, baudrate)
+                    usb_detector_log.info("Attempting connection to %s with baudrate %d", port, baudrate)
                     self.ser = serial.Serial(port, baudrate, timeout=2)
                     self.ser.write(f"$I\n".encode())
                     response = self.ser.read_until()
 
                     try:
                         decoded_response = response.decode()
-                        logging.info("Response from %s at %d: %s", port, baudrate, decoded_response)
+                        usb_detector_log.info("Response from %s at %d: %s", port, baudrate, decoded_response)
 
                     except UnicodeDecodeError:
-                        logging.warning("Received non-UTF-8 response from %s at %d: %s", port, baudrate, response)
+                        usb_detector_log.warning("Received non-UTF-8 response from %s at %d: %s", port, baudrate, response)
                         continue
 
                     if response:
-                        logging.info("Successfully connected on %s at %d.", port, baudrate)
+                        usb_detector_log.info("Successfully connected on %s at %d.", port, baudrate)
                         return port, baudrate
                     
                 except (serial.SerialException, serial.SerialTimeoutException, PermissionError) as e:
-                    logging.error("Failed to connect to %s at %d: %s", port, baudrate, e)
+                    usb_detector_log.error("Failed to connect to %s at %d: %s", port, baudrate, e)
 
                 finally:
                     if self.ser and self.ser.is_open:
-                        logging.debug(f"Closing connection to {port}.")
+                        usb_detector_log.debug(f"Closing connection to {port}.")
                         self.ser.close()
                         self.ser = None
-        logging.error("Couldn't connect to any device.")
+        usb_detector_log.error("Couldn't connect to any device.")
 
         return None, None
 
@@ -147,4 +131,3 @@ class USBDeviceDetector:
 if __name__ == "__main__":
     detector = USBDeviceDetector()
     port, baudrate = detector.run()
-    print(port, baudrate)
