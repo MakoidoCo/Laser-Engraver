@@ -3,7 +3,8 @@ import logging, os, sys
 from pprint import pprint
 from typing import Union, Dict, List, Optional
 
-from setup import HANDLER, LOGLEVEL
+sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
+from Config.setup import *
 
 tkwidget_tree_log = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 tkwidget_tree_log.addHandler(HANDLER)
@@ -117,22 +118,27 @@ class TKWidgetTree:
             return None
 
 
-    def get_parents(self, widget: tk.Widget, include_self: bool = True) -> List[tk.Widget]:
+    def get_parents(self, widget: tk.Widget, include_self: bool = True, max_parent: int = None) -> List[tk.Widget]:
         """
         Get the list of all parents of a given widget, including itself.
 
         Args:
             widget (tk.Widget): The widget whose parents to find.
             include_self (bool): Whether to include the widget itself in the list.
+            max_parent (int): Maximum number of parents to include. If None, includes all parents.
 
         Returns:
             list of tk.Widget: The list of parent widgets.
         """
+        if max_parent is None:
+            max_parent = float('inf')
+
         parents = []
         current_widget = widget if include_self else self.get_parent(widget)
-        while current_widget:
+        while current_widget and max_parent > 0:
             parents.append(current_widget)
             current_widget = self.get_parent(current_widget)
+            max_parent -= 1
         tkwidget_tree_log.debug(f"Parents of {widget}: {parents}")
         return parents
 
@@ -156,23 +162,42 @@ class TKWidgetTree:
         return None
 
 
-    def get_children(self, parent: tk.Widget, recursive: bool = False) -> List[tk.Widget]:
+    def get_children(self, parent: tk.Widget, recursive: bool = False, max_children: int = None) -> List[tk.Widget]:
         """
         Get the list of children widgets of a given parent widget.
 
         Args:
             parent (tk.Widget): The parent widget.
             recursive (bool): Whether to include children of children recursively.
+            max_children (int): Maximum number of children to include. If None, includes all children.
 
         Returns:
             list of tk.Widget: The list of children widgets.
         """
         children = parent.winfo_children()
-        if recursive:
+        if max_children is not None and max_children >= 0:
+            children = children[:max_children]
+
+        if recursive and max_children is not None and max_children > 0:
             for child in parent.winfo_children():
-                children.extend(self.get_children(child, recursive=True))
+                children.extend(self.get_children(child, recursive=True, max_children=max_children-len(children)))
+
         tkwidget_tree_log.debug(f"Children of {parent.winfo_name()}: {children}")
         return children
+
+
+    def get_descendants(self, widget, max_depth=None):
+        descendants = []
+        def traverse_descendants(parent, depth):
+            nonlocal descendants
+            if max_depth is not None and depth >= max_depth:
+                return
+            children = parent.winfo_children()
+            descendants.extend(children)
+            for child in children:
+                traverse_descendants(child, depth + 1)
+        traverse_descendants(widget, 0)
+        return descendants
 
 
     def get_widget_exist(self, widget: tk.Widget) -> bool:
@@ -295,9 +320,9 @@ class TKWidgetTree:
         self.root.after(self.clock, self.update_and_repeat)
 
 
+
 class ExampleApp(tk.Tk):
-    
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
         self.title("Widget Tree")
         self.viewer = TKWidgetTree(self, clock=5000)
@@ -312,21 +337,24 @@ class ExampleApp(tk.Tk):
         button2.pack(pady=10, padx=10)
         frame2.pack(pady=20, padx=20)
 
-        label_offscreen = tk.Label(self, text="Widget off screen", bg="red", fg="white", name="offscreen")
-        label_offscreen.place(x=-100, y=-100)
-        
-        hidden_frame = tk.Frame(self, width=300, height=200, bg="lightgreen", name="hidden_frame")
-        hidden_frame.pack_forget()
+        frame3 = tk.Frame(frame2, width=200, height=100, bg="lightgreen", name="frame3")
+        label3 = tk.Label(frame3, text="Label 3", bg="lightgreen", name="label3")
+        label3.pack(pady=5, padx=5)
+        frame3.pack(pady=10, padx=10)
 
-        grid_frame = tk.Frame(self, width=300, height=200, bg="lightyellow", name="grid_frame")
-        grid_frame.pack(pady=20, padx=20)
-        label_grid1 = tk.Label(grid_frame, text="Grid Label 1", bg="lightyellow", name="label_grid1")
-        label_grid1.grid(row=1, column=0, pady=5, padx=5)
-        label_grid2 = tk.Label(grid_frame, text="Grid Label 2", bg="lightyellow", name="label_grid2")
-        label_grid2.grid(row=1, column=0, pady=5, padx=5)
+        frame4 = tk.Frame(frame3, width=150, height=80, bg="lightyellow", name="frame4")
+        label4 = tk.Label(frame4, text="Label 4", bg="lightyellow", name="label4")
+        label4.pack(pady=5, padx=5)
+        frame4.pack(pady=5, padx=5)
+
+        frame5 = tk.Frame(frame4, width=100, height=50, bg="lightcoral", name="frame5")
+        label5 = tk.Label(frame5, text="Label 5", bg="lightcoral", name="label5")
+        label5.pack(pady=5, padx=5)
+        frame5.pack(pady=5, padx=5)
 
         entry = tk.Entry(self, width=20, name="entry")
         entry.pack(pady=10)
+
         check_button = tk.Checkbutton(self, text="Check Button", name="check_button")
         check_button.pack(pady=10)
 
@@ -346,10 +374,9 @@ class ExampleApp(tk.Tk):
         parent_widget = self.viewer.get_parent(button2)
         tkwidget_tree_log.info(f"Parent widget of button2: {parent_widget}")
 
-        parents = self.viewer.get_parents(button2)
-        tkwidget_tree_log.info(f"All parents of button2: {parents}")
+        parents_all = self.viewer.get_parents(button2)
+        tkwidget_tree_log.info(f"All parents of button2: {parents_all}")
 
-        frame2 = self.nametowidget(".frame2")
         button2_child = self.viewer.get_child(frame2, "button2")
         tkwidget_tree_log.info(f"Child widget 'button2' under frame2: {button2_child}")
 
@@ -358,20 +385,44 @@ class ExampleApp(tk.Tk):
 
         found_widget = self.viewer.find_widget_by_name("button2")
         tkwidget_tree_log.info(f"Widget found by name (no depth): {pprint(found_widget, indent=2)}")
-        
+
         found_widget = self.viewer.find_widget_by_name("button2", max_depth=1)
         tkwidget_tree_log.info(f"Widget found by name (with depth=1): {found_widget}")
-        
+
         found_widget = self.viewer.find_widget(button2)
         tkwidget_tree_log.info(f"Widget found by reference (no depth): {pprint(found_widget, indent=2)}")
-        
+
         found_widget = self.viewer.find_widget(button2, max_depth=1)
         tkwidget_tree_log.info(f"Widget found by reference (with depth=1): {found_widget}")
 
+        parent_widget = self.viewer.get_parent(button2)
+        tkwidget_tree_log.info(f"Parent widget of button2: {parent_widget}")
+
+        parents_all = self.viewer.get_parents(button2)
+        tkwidget_tree_log.info(f"All parents of button2 (no limit): {parents_all}")
+
+        parents_limited = self.viewer.get_parents(button2, max_parent=1)
+        tkwidget_tree_log.info(f"Parents of button2 limited to 1 level: {parents_limited}")
+
+
+        button2_child = self.viewer.get_child(frame2, "button2")
+        tkwidget_tree_log.info(f"Child widget 'button2' under frame2: {button2_child}")
+
+        children_all = self.viewer.get_children(frame2)
+        tkwidget_tree_log.info(f"All children under frame2 (no limit): {children_all}")
+
+        children_limited = self.viewer.get_children(frame2, recursive=True, max_children=9)
+        tkwidget_tree_log.info(f"Children of frame2 limited to 9 levels and recursive: {children_limited}")
+
+        descendants = self.viewer.get_descendants(frame2, max_depth=2)
+        tkwidget_tree_log.info(f"Descendants of frame2 up to depth 2: {[descendants]}")
+
+
         self.viewer.update_and_repeat()
-    
+
     def run(self):
         self.mainloop()
+
 
 if __name__ == "__main__":
     app = ExampleApp()

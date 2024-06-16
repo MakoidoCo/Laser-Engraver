@@ -1,6 +1,8 @@
-import logging, serial, os
+import logging, serial, os, sys
 from serial.tools import list_ports
-from setup import HANDLER, LOGLEVEL
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+from Config.setup import *
+
 
 usb_detector_log = logging.getLogger(os.path.splitext(os.path.basename(__file__))[0])
 usb_detector_log.addHandler(HANDLER)
