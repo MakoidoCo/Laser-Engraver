@@ -18,5 +18,3 @@ HANDLER = logging.StreamHandler()
 HANDLER.setFormatter(FORMATTER)
 
 LOGLEVEL = logging.INFO
-
-__all__ = ['FORMATTER', 'HANDLER', 'LOGLEVEL']

@@ -21,12 +21,14 @@
         ]
     },
 
-    "Celebrity_Days": [
-        "Martin Luther King Jr. Day",
-        "Presidents' Day",
-        "Nelson Mandela Day",
-        "Gandhi Day",
-        "Albert Einstein Day"
+    "Celebrities": [
+        "Martin Luther King Jr.",
+        "Presidents",
+        "Nelson Mandela",
+        "Gandhi",
+        "Albert Einstein",
+        "CR7",
+        "Messi"
     ],
 
     "Special_and_Thematic_Events": [
