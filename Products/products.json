@@ -100,5 +100,10 @@
         "Vishnu",
         "Yahweh",
         "Moses"
+    ],
+
+    "Custom": [
+        "Puzzle",
+        "ShadowBox"
     ]
 }
