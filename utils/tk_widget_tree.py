@@ -320,7 +320,6 @@ class TKWidgetTree:
         self.root.after(self.clock, self.update_and_repeat)
 
 
-
 class ExampleApp(tk.Tk):
     def __init__(self):
         super().__init__()
